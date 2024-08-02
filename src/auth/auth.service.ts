@@ -5,11 +5,14 @@ import {RpcException} from "@nestjs/microservices";
 import {hash, compare} from 'bcrypt';
 import {JWTPayload} from "./interface";
 import {JwtService} from "@nestjs/jwt";
+import {ConfigService} from "@nestjs/config";
+import {ConfigEnum} from "../config";
 
 @Injectable()
 export class AuthService extends PrismaClient implements OnModuleInit {
     constructor(
         private readonly jwtService: JwtService,
+        private readonly configService: ConfigService,
     ) {
         super();
     }
@@ -92,7 +95,18 @@ export class AuthService extends PrismaClient implements OnModuleInit {
     }
 
     async verify(token: string) {
-        return 'Auth User Verify'
+        try {
+            const secret = this.configService.get<string>(ConfigEnum.SECRET);
+
+            const {sub, iat, exp, ...user} = this.jwtService.verify(token, {secret: secret});
+
+            return {
+                user,
+                token: await this.signJwt(user)
+            }
+        } catch (err) {
+            throw new RpcException(err);
+        }
     }
 
     private async signJwt(user: JWTPayload) {

@@ -7,6 +7,7 @@ import {ConfigEnum} from "../config";
 
 @Module({
     imports: [
+        ConfigModule,
         JwtModule.registerAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
