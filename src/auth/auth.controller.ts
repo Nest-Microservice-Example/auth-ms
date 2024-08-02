@@ -1,6 +1,6 @@
 import {Controller} from '@nestjs/common';
 import {AuthService} from './auth.service';
-import {MessagePattern, Payload} from "@nestjs/microservices";
+import {MessagePattern, Payload, RpcException} from "@nestjs/microservices";
 import {LoginUserDto, RegisterUserDto} from "./dto";
 
 @Controller('auth')

@@ -69,13 +69,29 @@ export class AuthService extends PrismaClient implements OnModuleInit {
                 });
             }
 
-            const isMath = compare(password, userExists.password);
+            const isMatch = await compare(password, userExists.password);
+
+            if (!isMatch) {
+                throw new RpcException({
+                    status: HttpStatus.UNAUTHORIZED,
+                    message: `Invalid credentials`
+                });
+            }
+
+            const {password: _, ...user} = userExists;
+
+            const token = await this.signJwt(user);
+
+            return {
+                user,
+                token
+            }
         } catch (err) {
             throw new RpcException(err);
         }
     }
 
-    verify(token: string) {
+    async verify(token: string) {
         return 'Auth User Verify'
     }
 
