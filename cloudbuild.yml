@@ -4,7 +4,7 @@ steps:
       [
         "build",
         "-t",
-        "us-east4-docker.pkg.dev/store-ms-431319/store-ms/auth-ms",
+        "us-central1-docker.pkg.dev/store-ms-431319/store-repository/auth-ms",
         "-f",
         "dockerfile.prod",
         "--platform=linux/amd64",
@@ -14,7 +14,7 @@ steps:
     args:
       [
         "push",
-        "us-east4-docker.pkg.dev/store-ms-431319/store-ms/auth-ms",
+        "us-central1-docker.pkg.dev/store-ms-431319/store-repository/auth-ms",
       ]
 options:
   logging: CLOUD_LOGGING_ONLY
